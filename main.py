@@ -9,14 +9,18 @@ from knnTraining import knnTraining
 # Carregar base de dados
 wineDataset = pd.read_csv("datasets/wine.data", header=None)
 glassDataset = pd.read_csv("datasets/glass.data", header=None)
+cancerDataset = pd.read_csv("datasets/cancer.data", header=None)
 
 wineX, wineY = splitData(wineDataset)
 glassX, glassY = splitData(glassDataset)
+cancerX, cancerY = splitData(cancerDataset)
 
 # 10-Fold
 wineX_train, wineY_train, wineX_test, wineY_test = stratifiedFold(wineX, wineY)
 glassX_train, glassY_train, glassX_test, glassY_test = stratifiedFold(
     glassX, glassY)
+cancerX_train, cancerY_train, cancerX_test, cancerY_test = stratifiedFold(
+    cancerX, cancerY)
 
 # Treinamento e teste
 
@@ -36,6 +40,12 @@ glassEntropyResults, glassEntropyAccuracy = decisionTreeTraining(
     glassX_train, glassY_train, glassX_test, glassY_test, "entropy")
 glassGiniResults, glassGiniAccuracy = decisionTreeTraining(
     glassX_train, glassY_train, glassX_test, glassY_test, "gini")
+
+# Árvores de busca para cancer dataset com o criterion entropy e gini
+cancerEntropyResults, cancerEntropyAccuracy = decisionTreeTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, "entropy")
+cancerGiniResults, cancerGiniAccuracy = decisionTreeTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, "gini")
 
 print("=-=-=-=-=-=-=-= Árvores de Busca =-=-=-=-=-=-=-=")
 
@@ -60,6 +70,17 @@ print()
 print("Glass decision tree with gini")
 print(glassGiniResults)
 print("{}%".format(glassGiniAccuracy))
+
+# Cancer dataset
+print()
+print("Cancer decision tree with entropy")
+print(cancerEntropyResults)
+print("{}%".format(cancerEntropyAccuracy))
+
+print()
+print("Cancer decision tree with gini")
+print(cancerGiniResults)
+print("{}%".format(cancerGiniAccuracy))
 print()
 
 
@@ -68,17 +89,23 @@ print()
 # KNN
 #
 ###############
-# KNN com métrica euclidean e k = 5 para wine dataset
+# KNN com métrica euclidean e k = 5 e 10 para wine dataset
 wine5nnResults, wine5nnAccuracy = knnTraining(
     wineX_train, wineY_train, wineX_test, wineY_test, 5)
 wine10nnResults, wine10nnAccuracy = knnTraining(
     wineX_train, wineY_train, wineX_test, wineY_test, 10)
 
-# KNN com métrica euclidean e k = 10 para glass dataset
+# KNN com métrica euclidean e k = 5 e 10 para glass dataset
 glass5nnResults, glass5nnAccuracy = knnTraining(
     glassX_train, glassY_train, glassX_test, glassY_test, 5)
 glass10nnResults, glass10nnAccuracy = knnTraining(
     glassX_train, glassY_train, glassX_test, glassY_test, 10)
+
+# KNN com métrica euclidean e k = 5 e 10 para cancer dataset
+cancer5nnResults, cancer5nnAccuracy = knnTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, 5)
+cancer10nnResults, cancer10nnAccuracy = knnTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, 10)
 
 print("=-=-=-=-=-=-=-= KNN =-=-=-=-=-=-=-=")
 
@@ -103,6 +130,17 @@ print()
 print("Glass 10NN")
 print(glass10nnResults)
 print("{}%".format(glass10nnAccuracy))
+
+# Cancer dataset
+print()
+print("Cancer 5NN")
+print(cancer5nnResults)
+print("{}%".format(cancer5nnAccuracy))
+
+print()
+print("Cancer 10NN")
+print(cancer10nnResults)
+print("{}%".format(cancer10nnAccuracy))
 print()
 
 
@@ -111,6 +149,7 @@ print()
 # MLP
 #
 ###############
+# MLP com layer_sizes = (5, 4) e (6, 6), activation = tanh e relu e 3000 iterações para wine dataset
 wineTanhLayer54Results, wineTanhLayer54Accuracy = MLPTraining(
     wineX_train, wineY_train, wineX_test, wineY_test, (5, 4), 'tanh', 3000)
 wineTanhLayer66Results, wineTanhLayer66Accuracy = MLPTraining(
@@ -120,6 +159,7 @@ wineReluLayer54Results, wineReluLayer54Accuracy = MLPTraining(
 wineReluLayer66Results, wineReluLayer66Accuracy = MLPTraining(
     wineX_train, wineY_train, wineX_test, wineY_test, (6, 6), 'relu', 3000)
 
+# MLP com layer_sizes = (5, 4) e (6, 6), activation = tanh e relu e 3000 iterações para glass dataset
 glassTanhLayer54Results, glassTanhLayer54Accuracy = MLPTraining(
     glassX_train, glassY_train, glassX_test, glassY_test, (5, 4), 'tanh', 3000)
 glassTanhLayer66Results, glassTanhLayer66Accuracy = MLPTraining(
@@ -128,6 +168,16 @@ glassReluLayer54Results, glassReluLayer54Accuracy = MLPTraining(
     glassX_train, glassY_train, glassX_test, glassY_test, (5, 4), 'relu', 3000)
 glassReluLayer66Results, glassReluLayer66Accuracy = MLPTraining(
     glassX_train, glassY_train, glassX_test, glassY_test, (6, 6), 'relu', 3000)
+
+# MLP com layer_sizes = (5, 4) e (6, 6), activation = tanh e relu e 3000 iterações para cancer dataset
+cancerTanhLayer54Results, cancerTanhLayer54Accuracy = MLPTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, (5, 4), 'tanh', 3000)
+cancerTanhLayer66Results, cancerTanhLayer66Accuracy = MLPTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, (6, 6), 'tanh', 3000)
+cancerReluLayer54Results, cancerReluLayer54Accuracy = MLPTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, (5, 4), 'relu', 3000)
+cancerReluLayer66Results, cancerReluLayer66Accuracy = MLPTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test, (6, 6), 'relu', 3000)
 
 print("=-=-=-=-=-=-=-= MLP =-=-=-=-=-=-=-=")
 
@@ -172,4 +222,25 @@ print()
 print("Glass with layer sizes (6, 6) and relu activation")
 print(glassReluLayer66Results)
 print("{}%".format(glassReluLayer66Accuracy))
+
+# Cancer dataset
+print()
+print("Cancer with layer sizes (5, 4) and tanh activation")
+print(cancerTanhLayer54Results)
+print("{}%".format(cancerTanhLayer54Accuracy))
+
+print()
+print("Cancer with layer sizes (6, 6) and tanh activation")
+print(cancerTanhLayer66Results)
+print("{}%".format(cancerTanhLayer66Accuracy))
+
+print()
+print("Cancer with layer sizes (5, 4) and relu activation")
+print(cancerReluLayer54Results)
+print("{}%".format(cancerReluLayer54Accuracy))
+
+print()
+print("Cancer with layer sizes (6, 6) and relu activation")
+print(cancerReluLayer66Results)
+print("{}%".format(cancerReluLayer66Accuracy))
 print()
