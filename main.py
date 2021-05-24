@@ -4,6 +4,7 @@ from stratifiedFold import stratifiedFold
 from MLPTraining import MLPTraining
 from decisionTreeTraining import decisionTreeTraining
 from knnTraining import knnTraining
+from KMeansTraining import KMeansTraining
 
 
 # Carregar base de dados
@@ -244,3 +245,41 @@ print("Cancer with layer sizes (6, 6) and relu activation")
 print(cancerReluLayer66Results)
 print("{}%".format(cancerReluLayer66Accuracy))
 print()
+
+
+###############
+#
+# K-Means
+#
+###############
+# K-Means wine dataset
+wineKMeansResults, wineKMeansAccuracy = KMeansTraining(
+    wineX_train, wineY_train, wineX_test, wineY_test)
+
+# K-Means glass dataset
+glassKMeansResults, glassKMeansAccuracy = KMeansTraining(
+    glassX_train, glassY_train, glassX_test, glassY_test)
+
+# K-Means cancer dataset
+cancerKMeansResults, cancerKMeansAccuracy = KMeansTraining(
+    cancerX_train, cancerY_train, cancerX_test, cancerY_test)
+
+print("=-=-=-=-=-=-=-= K-Means =-=-=-=-=-=-=-=")
+
+# Wine dataset
+print()
+print("Wine K-Means")
+print(wineKMeansResults)
+print("{}%".format(wineKMeansAccuracy))
+
+# Glass dataset
+print()
+print("Glass K-Means")
+print(glassKMeansResults)
+print("{}%".format(glassKMeansAccuracy))
+
+# Cancer dataset
+print()
+print("Cancer K-Means")
+print(cancerKMeansResults)
+print("{}%".format(cancerKMeansAccuracy))
